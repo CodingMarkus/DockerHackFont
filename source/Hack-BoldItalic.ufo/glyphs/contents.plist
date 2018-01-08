@@ -524,6 +524,10 @@
 	<string>eight.subs.glif</string>
 	<key>element</key>
 	<string>element.glif</string>
+	<key>onedotenleader</key>
+	<string>onedotenleader.glif</string>
+	<key>twodotenleader</key>
+	<string>twodotenleader.glif</string>
 	<key>ellipsis</key>
 	<string>ellipsis.glif</string>
 	<key>emacron</key>
@@ -602,8 +606,6 @@
 	<string>gdotaccent.glif</string>
 	<key>germandbls</key>
 	<string>germandbls.glif</string>
-	<key>glyph121</key>
-	<string>glyph121.glif</string>
 	<key>gradient</key>
 	<string>gradient.glif</string>
 	<key>grave</key>
@@ -712,6 +714,8 @@
 	<string>logicalnot.glif</string>
 	<key>logicalor</key>
 	<string>logicalor.glif</string>
+	<key>longs</key>
+	<string>longs.glif</string>
 	<key>lozenge</key>
 	<string>lozenge.glif</string>
 	<key>lslash</key>
@@ -1898,12 +1902,18 @@
 	<string>uni201F_.glif</string>
 	<key>uni2023</key>
 	<string>uni2023.glif</string>
+	<key>hyphenationpoint</key>
+	<string>hyphenationpoint.glif</string>
 	<key>uni202F</key>
 	<string>uni202F_.glif</string>
 	<key>uni2031</key>
 	<string>uni2031.glif</string>
-	<key>uni2034</key>
-	<string>uni2034.glif</string>
+	<key>minute</key>
+	<string>minute.glif</string>
+	<key>second</key>
+	<string>second.glif</string>
+	<key>millisecond</key>
+	<string>millisecond.glif</string>
 	<key>uni2035</key>
 	<string>uni2035.glif</string>
 	<key>uni2036</key>

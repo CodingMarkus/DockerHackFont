@@ -324,7 +324,8 @@
 		<string>Zdotaccent</string>
 		<string>zdotaccent</string>
 		<string>Zcaron</string>
-		<string>zcaron</string>  <!-- End ASCII + Latin-1 + Latin Extended A sets -->
+		<string>zcaron</string>
+		<string>longs</string> <!-- End ASCII + Latin-1 + Latin Extended A sets -->
 		<string>florin</string>  <!-- Begin currency-->
 		<string>uni0E3F</string>
 		<string>uni20A0</string>
@@ -371,6 +372,9 @@
 		<string>daggerdbl</string>
 		<string>uni2022</string>
 		<string>uni2023</string>
+		<string>hyphenationpoint</string>
+		<string>onedotenleader</string>
+		<string>twodotenleader</string>
 		<string>ellipsis</string>
 		<string>perthousand</string>
 		<string>uni2031</string>
@@ -387,6 +391,9 @@
 		<string>uni2048</string>
 		<string>uni2049</string>
 		<string>uni204B</string>
+		<string>minute</string>
+		<string>second</string>
+		<string>millisecond</string>
 	</array>
 	<key>public.glyphOrder</key>
 	<array>
@@ -981,6 +988,8 @@
 		<string>bullet</string>
 		<string>colon</string>
 		<string>comma</string>
+		<string>onedotenleader</string>
+		<string>twodotenleader</string>
 		<string>ellipsis</string>
 		<string>exclam</string>
 		<string>exclamdbl</string>
@@ -998,6 +1007,7 @@
 		<string>underscoredbl</string>
 		<string>uni2016</string>
 		<string>uni2023</string>
+		<string>hyphenationpoint</string>
 		<string>uni203D</string>
 		<string>uni203E</string>
 		<string>uni203F</string>
@@ -1050,7 +1060,9 @@
 		<string>quoteright</string>
 		<string>quotesinglbase</string>
 		<string>uni201F</string>
-		<string>uni2034</string>
+		<string>minute</string>
+		<string>second</string>
+		<string>millisecond</string>
 		<string>uni2035</string>
 		<string>uni2036</string>
 		<string>uni2037</string>

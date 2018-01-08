@@ -179,6 +179,7 @@
 		<string>l</string>
 		<string>lacute</string>
 		<string>lcaron</string>
+		<string>longs</string>
 		<string>uni013C</string>
 		<string>lslash</string>
 		<string>m</string>
@@ -585,11 +586,12 @@
 		<string>uni00B3</string>
 		<string>asterisk</string>
 		<string>backslash</string>
-		<string>glyph121</string>
 		<string>uni2219</string>
 		<string>bullet</string>
 		<string>colon</string>
 		<string>comma</string>
+		<string>onedotenleader</string>
+		<string>twodotenleader</string>
 		<string>ellipsis</string>
 		<string>exclam</string>
 		<string>exclamdbl</string>
@@ -607,6 +609,7 @@
 		<string>underscoredbl</string>
 		<string>uni2016</string>
 		<string>uni2023</string>
+		<string>hyphenationpoint</string>
 		<string>uni203D</string>
 		<string>uni203E</string>
 		<string>uni203F</string>
@@ -659,7 +662,9 @@
 		<string>quoteright</string>
 		<string>quotesinglbase</string>
 		<string>uni201F</string>
-		<string>uni2034</string>
+		<string>minute</string>
+		<string>second</string>
+		<string>millisecond</string>
 		<string>uni2035</string>
 		<string>uni2036</string>
 		<string>uni2037</string>

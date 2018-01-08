@@ -1,7 +1,7 @@
 
 # Hack
 
-[![Build Status](https://travis-ci.org/source-foundry/Hack.svg?branch=master)](https://travis-ci.org/source-foundry/Hack) [![Contributors](https://img.shields.io/badge/contributors-121-orange.svg?style=flat)](https://github.com/source-foundry/Hack/blob/master/docs/CONTRIBUTORS.md)
+[![Build Status](https://travis-ci.org/source-foundry/Hack.svg?branch=master)](https://travis-ci.org/source-foundry/Hack) [![Contributors](https://img.shields.io/badge/contributors-123-orange.svg?style=flat)](https://github.com/source-foundry/Hack/blob/master/docs/CONTRIBUTORS.md)
 
 Hack v3 is here!  [Click here to learn what's new](https://medium.com/source-words/hack-typeface-v3-6943991c1a80).
 
@@ -159,11 +159,13 @@ Contributions to the Hack project are welcomed.  Please review our [CONTRIBUTING
 
 ## Built With
 
-Hack is built with the following free, open source tools:
+Hack is built with the following free, open source projects:
 
 - [Font Bakery](https://github.com/googlefonts/fontbakery) - post-compilation modifications
 - [fontmake](https://github.com/googlei18n/fontmake) - UFO to ttf compilation
-- [font-v](https://github.com/source-foundry/font-v) - font versioning, git commit sha1 short string labeling of font versions
+- [font-v](https://github.com/source-foundry/font-v) - semantic font version string editor
+- [ink](https://github.com/chrissimpkins/ink) - stream editor for CSS file templating
+- [OpenFV](https://github.com/openfv/openfv) - open specification for semantic typeface versioning
 - [sfnt2woff_zopfli](https://github.com/bramstein/sfnt2woff-zopfli) - ttf to woff web font compilation
 - [ttfautohint](https://www.freetype.org/ttfautohint/) - ttf instruction sets
 - [ufodiff](https://github.com/source-foundry/ufodiff) - UFO source diffs

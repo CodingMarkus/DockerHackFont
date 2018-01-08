@@ -1,3 +1,27 @@
+# Version 3.001
+
+- U+017F, added long s glyph to all four variant sets, completes Latin Extended A character sets
+- U+2024, added onedotenleader glyph to all four variant sets (general punctuation set)
+- U+2025, added twodotenleader glyph to all four variant sets (general punctuation set)
+- U+2027, added hyphenationpoint glyph to all four variant sets (general punctuation set)
+- U+2032, added minute glyph to all four variant sets (general punctuation set)
+- U+2033, added second glyph to all four variant sets (general punctuation set)
+- U+2034, modified glyph name to "millisecond" in all four variant sets (general punctuation set)
+- U+2012, modified figure dash to width of numeral glyphs in all four variant sets
+- U+2013, modified en dash to half width of em in all four variant sets
+- U+2014, modified em dash, slight adjustment to height in all four variant sets, horizontal position in italic and bold italic sets
+- U+0031, increased angle of top stroke vs. horizontal, all sets (legibility vs. U+006C)
+- U+0031, increased length of the top stroke, all sets (legibility vs. U+006C)
+- U+0031, decreased width of the top stroke, bold and bold italic sets (legibility vs. U+006C)
+- updated Harbuzz build dependency to v1.7.4
+- updated FreeType build dependency to v2.8.1
+- removed FreeType build patches in ttfautohint-build.sh script (not necessary after above upgrade)
+- modified ttfautohint-build.sh license to MIT License
+- added CSS file templates for automated git sha1 short code writes for releases
+- added new CSS file template build shell script
+- added new make target for CSS template file builds (make css)
+
+
 # Version 3.000
 
 ### New license
