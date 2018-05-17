@@ -1,2 +1,5 @@
 # remove backup FontLab Studio source files
 *.vfbak
+
+# remove macOS resource forks
+.DS_Store
