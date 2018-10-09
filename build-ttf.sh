@@ -7,10 +7,13 @@
 #  Copyright 2018 Christopher Simpkins
 #  MIT License
 #
-#  Usage: ./build-ttf.sh (--install-dependencies)
+#  Usage: ./build-ttf.sh (--install-dependencies[-only])
 #     Arguments:
 #     --install-dependencies (optional) - installs all
 #       build dependencies prior to the build script execution
+#
+#     --install-dependencies-only (optional) - installs all
+#       build dependencies but doesn't actually build anything
 #
 # /////////////////////////////////////////////////////////////////
 
@@ -22,23 +25,27 @@
 TTFAH="$HOME/ttfautohint-build/local/bin/ttfautohint"
 
 # test for number of arguments
-if [ $# -gt 1 ]
-	then
-	    echo "Inappropriate arguments included in your command." 1>&2
-	    echo "Usage: ./build-ttf.sh (--install-dependencies)" 1>&2
-	    exit 1
+if [ $# -gt 1 ]; then
+	echo "Inappropriate arguments included in your command." 1>&2
+	echo "Usage: ./build-ttf.sh (--install-dependencies)" 1>&2
+	exit 1
 fi
 
 # Optional build dependency install request with syntax `./build.sh --install-dependencies`
-if [ "$1" = "--install-dependencies" ]
-	then
+case "$1" in
+	"--install-dependencies" | "--install-dependencies-only")
 		# fontmake
 		pip install --upgrade fontmake
 		# fontTools (installed with fontmake at this time. leave this as dependency check as python scripts for fixes require it should fontTools eliminate dep)
 		pip install --upgrade fonttools
 		# ttfautohint v1.6 (must be pinned to v1.6 and above for Hack instruction sets)
         tools/scripts/install/ttfautohint-build.sh
+	;;
+esac
 
+if [ "$1" = "--install-dependencies-only" ]; then
+	echo "Dependencies successfully installed."
+	exit 0
 fi
 
 # confirm executable installs and library imports for build dependencies

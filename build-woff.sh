@@ -7,10 +7,13 @@
 #  Copyright 2018 Christopher Simpkins
 #  MIT License
 #
-#  Usage: ./build-woff.sh (--install-dependencies)
+#  Usage: ./build-woff.sh (--install-dependencies[-only])
 #     Arguments:
 #     --install-dependencies (optional) - installs all
 #       build dependencies prior to the build script execution
+#
+#     --install-dependencies-only (optional) - installs all
+#       build dependencies but doesn't actually build anything
 #
 #  NOTE: If you change the source, you must build new ttf files
 #        with build.sh PRIOR to execution of this script.
@@ -47,16 +50,15 @@ BOLDITALIC_PRE="Hack-BoldItalic.woff"
 BOLDITALIC_WOFF="hack-bolditalic.woff"
 
 # test for number of arguments
-if [ $# -gt 1 ]
-	then
-	    echo "Inappropriate arguments included in your command." 1>&2
-	    echo "Usage: ./build-woff.sh (--install-dependencies)" 1>&2
-	    exit 1
+if [ $# -gt 1 ]; then
+	echo "Inappropriate arguments included in your command." 1>&2
+	echo "Usage: ./build-woff.sh (--install-dependencies)" 1>&2
+	exit 1
 fi
 
 # Optional build dependency install request with syntax `./build-web.sh --install-dependencies`
-if [ "$1" = "--install-dependencies" ]
-	then
+case "$1" in
+	"--install-dependencies" | "--install-dependencies-only")
 		# define the current directory (Hack repository)
 		CUR_DIR=$(pwd)
 
@@ -91,8 +93,13 @@ if [ "$1" = "--install-dependencies" ]
 
 		# make Hack repository the current directory again following the build
 		cd "$CUR_DIR" || exit 1
-fi
+	;;
+esac
 
+if [ "$1" = "--install-dependencies-only" ]; then
+	echo "Dependencies successfully installed."
+	exit 0
+fi
 
 if [ -f "$SFNTWOFF_BIN" ]; then
 	echo "Beginning web font build with $SFNTWOFF"
@@ -165,8 +172,3 @@ fi
 if [ -f "$WOFF_BUILD/$BOLDITALIC_WOFF" ]; then
 	echo "Bold Italic woff build path: $WOFF_BUILD/$BOLDITALIC_WOFF"
 fi
-
-
-
-
-
