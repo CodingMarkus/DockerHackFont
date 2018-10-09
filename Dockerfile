@@ -33,3 +33,10 @@ WORKDIR /build
 RUN ./build-ttf.sh --install-dependencies-only
 RUN ./build-woff.sh --install-dependencies-only
 RUN ./build-woff2.sh --install-dependencies-only
+
+
+# -=< Default Command >=-
+
+# Unless otherwise specified, we just do this
+WORKDIR /build
+CMD make
