@@ -1,15 +1,13 @@
 #!/bin/sh
 # shellcheck disable=SC2103
-# shellcheck disable=SC2003
-# shellcheck disable=SC2006
 # This script builds a stand-alone binary for the command line version of
 # ttfautohint, downloading any necessary libraries.
 #
-# Version 2017-Nov-24.
+# Version 2018-Feb-22.
 
 # The MIT License (MIT)
 
-# Copyright (c) 2017 Werner Lemberg
+# Copyright (c) 2018 Werner Lemberg
 
 # Permission is hereby granted, free of charge, to any person obtaining a copy of
 # this software and associated documentation files (the "Software"), to deal in
@@ -37,13 +35,16 @@
 BUILD="$HOME/ttfautohint-build"
 
 # The library versions.
-FREETYPE_VERSION="2.8.1"
-HARFBUZZ_VERSION="1.7.4"
+FREETYPE_VERSION="2.8"
+HARFBUZZ_VERSION="1.5.0"
 TTFAUTOHINT_VERSION="1.7"
 
 # Necessary patches (lists of at most 10 URLs each separated by whitespace,
 # to be applied in order).
-FREETYPE_PATCHES=""
+FREETYPE_PATCHES="\
+  http://git.savannah.gnu.org/cgit/freetype/freetype2.git/patch/?id=c9a9cf59 \
+  http://git.savannah.gnu.org/cgit/freetype/freetype2.git/patch/?id=c8829e4b \
+"
 HARFBUZZ_PATCHES=""
 TTFAUTOHINT_PATCHES=""
 
@@ -81,21 +82,21 @@ count=0
 for i in $FREETYPE_PATCHES
 do
   curl -o ft-patch-$count.diff "$i"
-  count=`expr $count + 1`
+  count=$((count + 1))
 done
 
 count=0
 for i in $HARFBUZZ_PATCHES
 do
   curl -o hb-patch-$count.diff "$i"
-  count=`expr $count + 1`
+  count=$((count + 1))
 done
 
 count=0
 for i in $TTFAUTOHINT_PATCHES
 do
   curl -o ta-patch-$count.diff "$i"
-  count=`expr $count + 1`
+  count=$((count + 1))
 done
 
 

@@ -1,3 +1,48 @@
+# Version 3.003
+
+- U+005B, increased length of square brackets' horizontal strokes (symmetrically reducing left and right sidebearing), all variants
+- U+005D, increased length of square brackets' horizontal strokes (symmetrically reducing left and right sidebearing), all variants
+- U+0051, extended length of tail, all variants
+- U+051A, extended length of tail, all variants
+- U+0061, simplified and improved contours, all variants
+- U+0062, simplified and improved contours, all variants
+- U+0063, simplified and improved contours, all variants
+- U+0064, simplified and improved contours, all variants
+- U+0065, simplified and improved contours, all variants
+- U+0066, simplified and improved contours, all variants
+- U+0067, simplified and improved contours, all variants
+- U+0068, simplified and improved contours, all variants
+- U+0069, simplified and improved contours, all variants
+- U+006A, simplified and improved contours, all variants
+- U+006B, simplified and improved contours, all variants
+- U+006C, simplified and improved contours, all variants
+- U+006D, simplified and improved contours, all variants
+- U+006E, simplified and improved contours, all variants
+- U+006F, simplified and improved contours, all variants
+- U+0070, simplified and improved contours, all variants
+- U+0071, simplified and improved contours, all variants
+- U+0072, simplified and improved contours, all variants
+- U+0073, simplified and improved contours, all variants
+- U+0074, simplified and improved contours, all variants
+- U+0075, simplified and improved contours, all variants
+- U+0076, simplified and improved contours, all variants
+- U+0077, simplified and improved contours, all variants
+- U+0078, simplified and improved contours, all variants
+- U+0079, simplified and improved contours, all variants
+- U+007A, simplified and improved contours, all variants
+- added config/fontconfig/45-Hack.conf for use on Linux distros to define Hack as a monospaced typeface
+- added ttdiff.sh shell script for OpenType table diffs of ttx XML dumps of font binaries
+- added checksum.py to scripts directory, supports the generation of SHA1 checksum files of font binaries and ttx dumps of OpenType tables
+- ttfautohint-build.sh, fixed backtick and expr syntax shellcheck warnings (SC2003/2006)
+- converted to Semaphore CI (from Travis CI) as CI testing service, eliminated .travis.yml settings file
+
+
+# Version 3.002
+
+- bugfix for https://github.com/source-foundry/Hack/issues/377 (affects Windows users)
+- bugfix for https://github.com/source-foundry/Hack/issues/379 (affects Linux users)
+- bugfix included removal of blue zone reference font in ttfautohint instruction set processing (-R flag).  This led to variable lowercase glyph heights on Linux and Windows platforms
+
 # Version 3.001
 
 - U+017F, added long s glyph to all four variant sets, completes Latin Extended A character sets
@@ -13,11 +58,12 @@
 - U+0031, increased angle of top stroke vs. horizontal, all sets (legibility vs. U+006C)
 - U+0031, increased length of the top stroke, all sets (legibility vs. U+006C)
 - U+0031, decreased width of the top stroke, bold and bold italic sets (legibility vs. U+006C)
+- removed name table, ID=5 record ttfautohint metadata (previously included in this version string)
 - updated Harbuzz build dependency to v1.7.4
 - updated FreeType build dependency to v2.8.1
 - removed FreeType build patches in ttfautohint-build.sh script (not necessary after above upgrade)
 - modified ttfautohint-build.sh license to MIT License
-- added CSS file templates for automated git sha1 short code writes for releases
+- added ink CSS file templates for automated git sha1 short code writes for releases
 - added new CSS file template build shell script
 - added new make target for CSS template file builds (make css)
 

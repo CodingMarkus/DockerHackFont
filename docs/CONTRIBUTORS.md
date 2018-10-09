@@ -12,7 +12,15 @@
 - Werner Lemberg
 - Chris Simpkins
 
-### Extended Set Design and Proofing
+### Basic Latin Set Revisions and Testing
+
+- JM
+- Vladimir Mitrović
+- Chris Simpkins
+- David van Gemeren
+- Joseph Winters
+
+### Extended Set Revisions and Testing
 
 - JM - all sets
 - Dmitry Maslennikov - Cyrillic set
@@ -33,7 +41,7 @@
 - @rafaeln - Kĩsêdjê set
 - @xstee (Leonid) - Cyrillic set
 
-### Powerline Glyph Set Design and Proofing
+### Powerline Glyph Set Revisions and Testing
 
 - Carlo Abelli
 - Justin Anderson
@@ -58,7 +66,7 @@
 
 - Chris Simpkins
 
-### Windows Development
+### Windows Installation & Testing
 
 - Michael "Tex" Hex
 
@@ -86,6 +94,9 @@
 
 - Guilherme Amadio - Linux
 - Helio Chissini de Castro - Linux
+- Mélanie Chauvel - Linux
+- Samina Fu - cdnjs
+- Fabian Greffrath - Linux
 - Michael "Tex" Hex - Windows
 - Paride Legovini - Linux
 - Caleb Maclennan - Linux, OS X
@@ -199,6 +210,7 @@
 - Gustaf Zetterlund
 - 张标 (@angrilove)
 - @duud
+- @haktrik
 - @hrj
 - @iamklutch
 - @legovini
