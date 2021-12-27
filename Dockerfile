@@ -8,13 +8,13 @@ FROM alpine
 # We can't install packages without running update first
 RUN apk update
 
-# Install what we need to build
-RUN apk add gcc g++ make patch python py-pip python-dev
+# Install tools we need to build dependencies later on
+RUN apk add gcc g++ make patch python3 py3-pip python3-dev
 
 # Install tools we need to download dependencies
 RUN apk add curl git
 
-# Install libraries we need to build dependencies
+# Install libraries dependencies require
 RUN apk add zlib-dev libxml2-dev libxslt-dev
 
 # -=< Adding Files >=-
@@ -28,7 +28,7 @@ COPY . /build/
 # but building ttfautohint requires the _Bool data type.
 RUN patch /usr/include/stdbool.h /build/docker/stdbool.h.patch
 
-# Install further dependencies
+# Install the actual dependencies
 WORKDIR /build
 RUN ./build-ttf.sh --install-dependencies-only
 RUN ./build-woff.sh --install-dependencies-only
