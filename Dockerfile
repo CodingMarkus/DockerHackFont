@@ -21,6 +21,9 @@ RUN apk add zlib-dev libxml2-dev libxslt-dev
 # Install tools useful for modification
 RUN apk add bash nano
 
+# Symlink Python3 to Python
+RUN ln -s /usr/bin/python3 /usr/bin/python
+
 
 # -=< Adding Files >=-
 
