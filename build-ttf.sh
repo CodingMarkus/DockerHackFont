@@ -7,7 +7,7 @@
 #  Copyright 2018 Christopher Simpkins
 #  MIT License
 #
-#  Usage: ./build-ttf.sh (--install-dependencies[-only])
+#  Usage: ./build-ttf.sh [--install-dependencies[-only]]
 #     Arguments:
 #     --install-dependencies (optional) - installs all
 #       build dependencies prior to the build script execution
@@ -27,7 +27,7 @@ TTFAH="$HOME/ttfautohint-build/local/bin/ttfautohint"
 # test for number of arguments
 if [ $# -gt 1 ]; then
 	echo "Inappropriate arguments included in your command." 1>&2
-	echo "Usage: ./build-ttf.sh (--install-dependencies)" 1>&2
+	echo "Usage: ./build-ttf.sh [--install-dependencies[-only]]" 1>&2
 	exit 1
 fi
 

@@ -7,7 +7,7 @@
 #  Copyright 2018 Christopher Simpkins
 #  MIT License
 #
-#  Usage: ./build-woff2.sh (--install-dependencies[-only])
+#  Usage: ./build-woff2.sh [--install-dependencies[-only]]
 #     Arguments:
 #     --install-dependencies (optional) - installs all
 #       build dependencies prior to the build script execution
@@ -49,7 +49,7 @@ BOLDITALIC_WOFF="hack-bolditalic.woff2"
 # test for number of arguments
 if [ $# -gt 1 ]; then
 	echo "Inappropriate arguments included in your command." 1>&2
-	echo "Usage: ./build-woff2.sh (--install-dependencies)" 1>&2
+	echo "Usage: ./build-woff2.sh [--install-dependencies[-only]]" 1>&2
 	exit 1
 fi
 
@@ -164,3 +164,8 @@ fi
 if [ -f "$WOFF_BUILD/$BOLDITALIC_WOFF" ]; then
 	echo "Bold Italic woff2 build path: $WOFF_BUILD/$BOLDITALIC_WOFF"
 fi
+
+
+
+
+

@@ -12,7 +12,7 @@ Don't like the development noise from the repository but want to keep up with ch
 
 ### A typeface designed for source code
 
-Hack is designed to be a workhorse typeface for source code. It has deep roots in the free, open source typeface community and expands upon the contributions of the [Bitstream Vera](https://www.gnome.org/fonts/) &amp; [DejaVu](http://dejavu-fonts.org/wiki/Main_Page) projects.  The large x-height + wide aperture + low contrast design make it legible at commonly used source code text sizes with a sweet spot that runs in the 8 - 14 range.  The full set of changes to the upstream source are available in the [changelog](CHANGELOG.md).
+Hack is designed to be a workhorse typeface for source code. It has deep roots in the free, open source typeface community and expands upon the contributions of the [Bitstream Vera](https://www.gnome.org/fonts/) &amp; [DejaVu](https://dejavu-fonts.github.io/) projects.  The large x-height + wide aperture + low contrast design make it legible at commonly used source code text sizes with a sweet spot that runs in the 8 - 14 range.  The full set of changes to the upstream source are available in the [changelog](CHANGELOG.md).
 
 The project is in active development, and we welcome your input and contributions.  You may view our design objectives and instructions on how to contribute in [CONTRIBUTING.md](CONTRIBUTING.md).
 
@@ -103,7 +103,7 @@ We are aware of Hack support in the following package managers (with associated 
 - **Debian**: `fonts-hack-ttf`
 - **Fedora / CentOS**: `dnf-plugins-core :: heliocastro/hack-fonts :: hack-fonts`
 - **Gentoo Linux**: `media-fonts/hack`
-- **Homebrew Cask (OS X)**: `caskroom/fonts/font-hack`
+- **Homebrew Cask (OS X)**: `homebrew/cask-fonts/font-hack`
 - **Open BSD**: `fonts/hack-fonts`
 - **OpenSUSE**: `hack-fonts`
 - **Ubuntu**: `fonts-hack-ttf`
