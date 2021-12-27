@@ -3,6 +3,7 @@
 # Start with a very simple Alpine Linux
 FROM alpine
 
+
 # -=< Install Required Packages >=-
 
 # We can't install packages without running update first
@@ -17,10 +18,15 @@ RUN apk add curl git
 # Install libraries dependencies require
 RUN apk add zlib-dev libxml2-dev libxslt-dev
 
+# Install tools useful for modification
+RUN apk add bash nano
+
+
 # -=< Adding Files >=-
 
 # Copy the entire repo + sub repo to the folder /build
 COPY . /build/
+
 
 # -=< Prepare the Build >=-
 
