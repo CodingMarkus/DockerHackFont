@@ -1,3 +1,12 @@
+This is a fork of the Hack font master repository. The reason why this fork exists is to add Docker support, so you can easily build your own Hack font release (posibly with modifications) on any system with Docker (or compatible engine) installed. Therefor I added a Docker file that is based upon Alpine Linux and installs everything required to build the font and patches `stdbool.h` because the version Alpine ships is incompatible with one of the dependencies.
+
+As you may want to modify the font multiple times and later on build multiple versions, I also had to modify the build scripts that only offered two options: Just build the font and first install dependencies and then build the font. I added a third option to only install dependencies without actually building the font, so you can first make your modifications within the Docker image prior to building anything.
+
+If you start the image without providing any command, it will just make the font. If you want to modify it first, e.g. replace the horrible zero with a slashe one, just provide `sh` as a command and you can make your modifications prior to building the font.
+
+Original README.md follows below.
+
+---
 
 # Hack
 
