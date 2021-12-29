@@ -31,11 +31,8 @@ RUN apk add bash nano
 COPY . /build/
 
 
-# -=< Prepare the Build >=-
 
-# We need to patch stdbool.h as C++ doesn't know _Bool data type
-# but building ttfautohint requires the _Bool data type.
-RUN patch /usr/include/stdbool.h /build/docker/stdbool.h.patch
+# -=< Prepare the Build >=-
 
 # Install the actual dependencies
 WORKDIR /build
