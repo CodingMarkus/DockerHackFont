@@ -1,4 +1,4 @@
-# -=< Base Image >=-
+# -=< Create Base Image >=-
 
 # Start with a very simple Alpine Linux
 FROM alpine
@@ -21,16 +21,24 @@ RUN apk add curl git
 # Install libraries dependencies require
 RUN apk add zlib-dev libxml2-dev libxslt-dev
 
-# Install tools useful for alt-hack modifications
-RUN apk add bash nano
+
+# -=< Add Files >=-
+
+# Copy the build files to the image
+COPY Makefile /hack/
+COPY build-subsets.sh /hack/
+COPY build-ttf.sh /hack/
+COPY build-woff.sh /hack/
+COPY build-woff2.sh /hack/
+
+# Copy the build folders to the image
+COPY config /hack/config/
+COPY postbuild_processing /hack/postbuild_processing/
+COPY source /hack/source/
+COPY tools /hack/tools/
 
 
-# -=< Adding Files >=-
-
-# Copy the entire repo + sub repo to the folder /build
-COPY . /build/
-
-
+# -=< Patch Alpine Linux >=-
 
 # Copy the patch file to the image
 COPY docker /hack/docker/
@@ -48,8 +56,29 @@ RUN ./build-woff.sh --install-dependencies-only
 RUN ./build-woff2.sh --install-dependencies-only
 
 
+# -=< Install Optional Packages >=-
+
+# Install bash as some extra tools need it
+RUN apk add bash
+
+# Install tools we need to create archives
+RUN apk add zip xz
+
+# Install a simple to use editor as vi just sucks for most people
+RUN apk add nano
+
+
+# -=< Add Optional Files >=-
+
+# Copy the alt modification files to the image
+COPY alt-hack /hack/alt-hack/
+
+# Copy alt modificaton script to the image
+COPY create-alt-hack.sh /hack/
+
+
 # -=< Default Command >=-
 
 # Unless otherwise specified, we just do this
-WORKDIR /build
-CMD make
+# WORKDIR /build
+# CMD make
