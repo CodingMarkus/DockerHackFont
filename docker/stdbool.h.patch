@@ -1,0 +1,13 @@
+--- stdbool.h
++++ stdbool.h
+@@ -7,6 +7,10 @@
+ #define false 0
+ #define bool _Bool
+
++#else
++
++#define _Bool bool
++
+ #endif
+
+ #define __bool_true_false_are_defined 1

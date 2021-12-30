@@ -32,10 +32,17 @@ COPY . /build/
 
 
 
-# -=< Prepare the Build >=-
+# Copy the patch file to the image
+COPY docker /hack/docker/
 
-# Install the actual dependencies
-WORKDIR /build
+# We need to patch stdbool.h as C++ doesn't actually know _Bool data type
+# but building ttfautohint requires the _Bool data type even in C++ files.
+RUN patch /usr/include/stdbool.h /hack/docker/stdbool.h.patch
+
+
+# -=< Install the actual dependencies >=-
+
+WORKDIR /hack
 RUN ./build-ttf.sh --install-dependencies-only
 RUN ./build-woff.sh --install-dependencies-only
 RUN ./build-woff2.sh --install-dependencies-only
