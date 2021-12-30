@@ -11,9 +11,14 @@
 #
 # ////////////////////////////////////////////////////////////////////
 
-HACK_VERSION="v3.003"
-HACK_ARCHIVES_DIR="../../../Hack-archives"
-HACK_BUILD_DIR="../../build"
+${HACK_VERSION:="v3.003"}
+${HACK_ARCHIVES_DIR:="../../../Hack-archives"}
+${HACK_BUILD_DIR:="../../build"}
+
+if [ -n "$ALT_HACK_VERSION" ]
+then
+	HACK_VERSION="$HACK_VERSION-$ALT_HACK_VERSION"
+fi
 
 
 # Make build directory the current working directory
