@@ -30,6 +30,9 @@
 # Ensure script fails if build fails!
 set -e
 
+# Find out how many CPU cores we have available
+cores=$( (nproc --all || sysctl -n hw.ncpu) 2>/dev/null || echo 1 )
+
 #
 # User configuration.
 #
@@ -169,8 +172,9 @@ cd "$FREETYPE" || exit 1
   CFLAGS="$TA_CPPFLAGS $TA_CFLAGS" \
   CXXFLAGS="$TA_CPPFLAGS $TA_CXXFLAGS" \
   LDFLAGS="$TA_LDFLAGS"
-make
+make -j "$cores"
 make install
+make clean
 cd ..
 
 
@@ -198,8 +202,9 @@ cd "$HARFBUZZ" || exit 1
   PKG_CONFIG=true \
   FREETYPE_CFLAGS="$TA_CPPFLAGS/freetype2" \
   FREETYPE_LIBS="$TA_LDFLAGS -lfreetype"
-make
+make -j "$cores"
 make install
+make clean
 cd ..
 
 
@@ -225,8 +230,9 @@ cd "$TTFAUTOHINT" || exit 1
   PKG_CONFIG=true \
   HARFBUZZ_CFLAGS="$TA_CPPFLAGS/harfbuzz" \
   HARFBUZZ_LIBS="$TA_LDFLAGS -lharfbuzz"
-make LDFLAGS="$TA_LDFLAGS -all-static"
+make -j "$cores" LDFLAGS="$TA_LDFLAGS -all-static"
 make install-strip
+make clean
 cd ..
 
 
