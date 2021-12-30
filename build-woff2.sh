@@ -81,7 +81,10 @@ case "$1" in
 		echo "Build woff2"
 		echo "#####"
 
-		make clean all
+		# Find out how many CPU cores we have available
+		cores=$( (nproc --all || sysctl -n hw.ncpu) 2>/dev/null || echo 1 )
+
+		make -j "$cores" clean all
 
 		# make Hack repository the current directory again following the build
 		cd "$CUR_DIR" || exit 1
@@ -164,8 +167,3 @@ fi
 if [ -f "$WOFF_BUILD/$BOLDITALIC_WOFF" ]; then
 	echo "Bold Italic woff2 build path: $WOFF_BUILD/$BOLDITALIC_WOFF"
 fi
-
-
-
-
-

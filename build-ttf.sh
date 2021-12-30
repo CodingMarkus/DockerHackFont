@@ -34,10 +34,21 @@ fi
 # Optional build dependency install request with syntax `./build.sh --install-dependencies`
 case "$1" in
 	"--install-dependencies" | "--install-dependencies-only")
+		# Find out how many CPU cores we have available
+		cores=$( (nproc --all || sysctl -n hw.ncpu) 2>/dev/null || echo 1 )
+		# This can speed up pip in some cases
+		export MAKEFLAGS="-j $cores"
+
 		# fontmake
-		pip install --upgrade fontmake
+		pip install --upgrade fontmake &
+		pid_fontmake=$!
+
 		# fontTools (installed with fontmake at this time. leave this as dependency check as python scripts for fixes require it should fontTools eliminate dep)
 		pip install --upgrade fonttools
+
+		# Wait until fontmake install has completed for sure
+		wait $pid_fontmake
+
 		# ttfautohint v1.6 (must be pinned to v1.6 and above for Hack instruction sets)
         tools/scripts/install/ttfautohint-build.sh
 	;;
