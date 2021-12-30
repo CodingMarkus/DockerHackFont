@@ -27,6 +27,9 @@
 # CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 
+# Ensure script fails if build fails!
+set -e
+
 #
 # User configuration.
 #
