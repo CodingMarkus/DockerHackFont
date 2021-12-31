@@ -1,10 +1,64 @@
-This is a fork of the Hack font master repository. The reason why this fork exists is to add Docker support, so you can easily build your own Hack font release (posibly with modifications) on any system with Docker (or compatible engine) installed. Therefor I added a Docker file that is based upon Alpine Linux and installs everything required to build the font and patches `stdbool.h` because the version Alpine ships is incompatible with one of the dependencies.
+# Docker Hack
 
-As you may want to modify the font multiple times and later on build multiple versions, I also had to modify the build scripts that only offered two options: Just build the font and first install dependencies and then build the font. I added a third option to only install dependencies without actually building the font, so you can first make your modifications within the Docker image prior to building anything.
+This is a fork of the Hack font master repository. The reason why this fork exists is to add Docker support, so you can easily build your own Hack font release (possibly with modifications) on any system with Docker (or compatible engine) installed.
 
-If you start the image without providing any command, it will just make the font. If you want to modify it first, e.g. replace the horrible zero with a slashe one, just provide `sh` as a command and you can make your modifications prior to building the font.
+## Sample usage:
 
-Original README.md follows below.
+1. Build a Docker image:
+
+```
+docker image build --tag hack_image .
+```
+
+
+2. Use it to build a Hack variant with slashed zero:
+
+```
+docker run --name hack hack_image sh -c "
+    ./create-alt-hack.sh /tmp/hack u0030-forwardslash
+    && cd /tmp/hack
+    && make
+    && ALT_HACK_VERSION=slashed_zero
+      HACK_ARCHIVES_DIR=/tmp/hack_arch
+      make archives
+  "
+
+docker cp hack:/tmp/hack_arch/. ~/Documents/Hack_with_slashed_zero
+
+docker container rm hack
+```
+
+3. You can build as many different variants as you like by repeating step (2) and specifying other modifications. Changes to the Docker image during step (2) are not persistent.
+
+
+4. Delete the image again:
+
+```
+docker image rm hack_image
+```
+
+## Modifications in this Fork
+
+* Added a Dockerfile containing the image bulid instructions.
+
+* Had to patch Alpine Linux's `stdbool.h` to make `ttfautohint` build (was easier than patching `ttfautohint` to be correct), so I added a patch file for that.
+
+* Made all natives builds detect the number of CPU cores available and use parallel building, which significantly speeds up some of the Docker image build steps.
+
+* Modified the build scripts to support a new option `--install-dependencies-only` which installs all required dependencies for building without actually building anything. This was required for the Docker image setup.
+
+* Wrote a script `create-alt-hack.sh` that creates a copy of the Hack source folder and then applies desired modifications from the [alt-hack repository](https://github.com/source-foundry/alt-hack) to it. It will not only correctly replace the glyphs but also remove any manual hints from the `ttfautohint` config files for glyphs it has replaced.
+
+* Fixed a problem with the `ttfautohint-build.sh` script that tried to apply patches but actually failed. Migrated to the latest version of that script and modified it in such a way that it requires as little temporary space when building as possible to not blow up any container or virtual file systems; also after each successful build, all source and build data is removed again. The script is now also fail-safe and stops if any called command failed.
+
+* Fixed a problem with the `archiver.sh` script that was using wrong relative paths when called from the `Makefile` (which seems intended if there is a dedicated make target for that). Also all the config variables of the script can be now be overridden by environment variables of the same name and a variant version may be given. The script is now also fail-safe and stops if any called command failed.
+
+* Fixed `ttfautohint` hinting files. The characters in the manual hinting files must be addressed by names in current `ttfautohint` builds, not by Unicode numbers as used to be the case in the past; this change has already been performed on the `dev` branch but was missing on the `master` branch, so I cherry-picked it from there.
+
+
+ \
+ \
+**Original README.md follows below.**
 
 ---
 
