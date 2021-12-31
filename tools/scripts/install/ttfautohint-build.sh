@@ -1,13 +1,15 @@
 #!/bin/sh
 # shellcheck disable=SC2103
+# shellcheck disable=SC2003
+# shellcheck disable=SC2006
 # This script builds a stand-alone binary for the command line version of
 # ttfautohint, downloading any necessary libraries.
 #
-# Version 2018-Feb-22.
+# Version 2019-Aug-14.
 
 # The MIT License (MIT)
 
-# Copyright (c) 2018 Werner Lemberg
+# Copyright (c) 2017 Werner Lemberg
 
 # Permission is hereby granted, free of charge, to any person obtaining a copy of
 # this software and associated documentation files (the "Software"), to deal in
@@ -27,37 +29,38 @@
 # CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 
-# Ensure script fails if build fails!
-set -e
-
-# Find out how many CPU cores we have available
-cores=$( (nproc --all || sysctl -n hw.ncpu) 2>/dev/null || echo 1 )
-
 #
 # User configuration.
+# All of the configuration variables below can be overridden by environment
+# variables of the same name.
 #
 
 # The build directory.
-BUILD="$HOME/ttfautohint-build"
+${BUILD:="$HOME/ttfautohint-build"}
+${INST:="$BUILD/local"}
+
+# Excepted build binary path
+${TTFAUTOHINT_BIN:="$INST/bin/ttfautohint"}
 
 # The library versions.
-FREETYPE_VERSION="2.8"
-HARFBUZZ_VERSION="1.5.0"
-TTFAUTOHINT_VERSION="1.7"
+${FREETYPE_VERSION:="2.10.2"}
+${HARFBUZZ_VERSION:="2.7.2"}
+${TTFAUTOHINT_VERSION:="1.8.3"}
 
 # Necessary patches (lists of at most 10 URLs each separated by whitespace,
 # to be applied in order).
-FREETYPE_PATCHES="\
-  http://git.savannah.gnu.org/cgit/freetype/freetype2.git/patch/?id=c9a9cf59 \
-  http://git.savannah.gnu.org/cgit/freetype/freetype2.git/patch/?id=c8829e4b \
-"
-HARFBUZZ_PATCHES=""
-TTFAUTOHINT_PATCHES=""
+${FREETYPE_PATCHES:=""}
+${HARFBUZZ_PATCHES:=""}
+${TTFAUTOHINT_PATCHES:=""}
+
 
 
 #
 # Nothing to configure below this comment.
 #
+
+# Ensure script fails if any command executed fails
+set -e
 
 FREETYPE="freetype-$FREETYPE_VERSION"
 HARFBUZZ="harfbuzz-$HARFBUZZ_VERSION"
@@ -68,43 +71,10 @@ if test -d "$BUILD" -o -f "$BUILD"; then
   exit 1
 fi
 
-INST="$BUILD/local"
-
 mkdir "$BUILD"
 mkdir "$INST"
 
-cd "$BUILD" || exit 1
-
-
-echo "#####"
-echo "Download all necessary archives and patches."
-echo "#####"
-
-curl -L -O "http://download.savannah.gnu.org/releases/freetype/$FREETYPE.tar.gz"
-curl -O "https://www.freedesktop.org/software/harfbuzz/release/$HARFBUZZ.tar.bz2"
-curl -L -O "http://download.savannah.gnu.org/releases/freetype/$TTFAUTOHINT.tar.gz"
-
-count=0
-for i in $FREETYPE_PATCHES
-do
-  curl -o ft-patch-$count.diff "$i"
-  count=$((count + 1))
-done
-
-count=0
-for i in $HARFBUZZ_PATCHES
-do
-  curl -o hb-patch-$count.diff "$i"
-  count=$((count + 1))
-done
-
-count=0
-for i in $TTFAUTOHINT_PATCHES
-do
-  curl -o ta-patch-$count.diff "$i"
-  count=$((count + 1))
-done
-
+cd "$BUILD"
 
 # Our environment variables.
 TA_CPPFLAGS="-I$INST/include"
@@ -112,50 +82,61 @@ TA_CFLAGS="-g -O2"
 TA_CXXFLAGS="-g -O2"
 TA_LDFLAGS="-L$INST/lib -L$INST/lib64"
 
-
-echo "#####"
-echo "Extract archives."
-echo "#####"
-
-tar -xzvf "$FREETYPE.tar.gz"
-tar -xjvf "$HARFBUZZ.tar.bz2"
-tar -xzvf "$TTFAUTOHINT.tar.gz"
+# Detect how many CPU cores are available
+CORE_COUNT=$( (nproc --all || sysctl -n hw.ncpu) 2>/dev/null || echo 1 )
 
 
-echo "#####"
-echo "Apply patches."
-echo "#####"
 
-cd "$FREETYPE" || exit 1
-for i in ../ft-patch-*.diff
-do
-  test -f "$i" || continue
-  patch -p1 -N -r - < "$i"
-done
-cd ..
-
-cd "$HARFBUZZ" || exit 1
-for i in ../hb-patch-*.diff
-do
-  test -f "$i" || continue
-  patch -p1 -N -r - < "$i"
-done
-cd ..
-
-cd "$TTFAUTOHINT" || exit 1
-for i in ../ta-patch-*.diff
-do
-  test -f "$i" || continue
-  patch -p1 -N -r - < "$i"
-done
-cd ..
-
+#
+# FreeType
+#
 
 echo "#####"
 echo "$FREETYPE"
 echo "#####"
 
-cd "$FREETYPE" || exit 1
+
+echo ""
+echo "### Downloading archive..."
+url_base="https://download.savannah.gnu.org/releases/freetype"
+curl -L -O "$url_base/$FREETYPE.tar.gz"
+
+
+echo ""
+echo "### Extracting archive..."
+tar -xzvf "$FREETYPE.tar.gz" && rm -f "$FREETYPE.tar.gz"
+
+
+if test -n "$FREETYPE_PATCHES"; then
+
+  echo ""
+  echo "### Downloading patches..."
+  count=0
+  for i in $FREETYPE_PATCHES
+  do
+    curl -o ft-patch-$count.diff "$i"
+    count=`expr $count + 1`
+  done
+
+
+  echo ""
+  echo "### Applying patches..."
+  cd "$FREETYPE"
+  for i in ../ft-patch-*.diff
+  do
+    test -f "$i" || continue
+    patch -p1 -N -r - < "$i"
+    rm -f "$i"
+  done
+  cd ..
+
+fi
+
+
+echo ""
+echo "### Building..."
+
+cd "$FREETYPE"
 
 # The space in `PKG_CONFIG' ensures that the created `freetype-config' file
 # doesn't find a working pkg-config, falling back to the stored strings
@@ -168,21 +149,75 @@ cd "$FREETYPE" || exit 1
   --prefix="$INST" \
   --enable-static \
   --disable-shared \
+  --enable-freetype-config \
   PKG_CONFIG=" " \
   CFLAGS="$TA_CPPFLAGS $TA_CFLAGS" \
   CXXFLAGS="$TA_CPPFLAGS $TA_CXXFLAGS" \
   LDFLAGS="$TA_LDFLAGS"
-make -j "$cores"
-make install
-make clean
-cd ..
+make -j "$CORE_COUNT"
 
+echo ""
+echo "### Installing..."
+make install
+cd ..
+rm -rf "$FREETYPE"
+
+echo ""
+echo "### Successfully installed FreeType."
+echo ""
+
+
+
+#
+# HarfBuzz
+#
 
 echo "#####"
 echo "$HARFBUZZ"
 echo "#####"
 
-cd "$HARFBUZZ" || exit 1
+
+echo ""
+echo "### Downloading archive..."
+url_base="https://github.com/harfbuzz/harfbuzz/releases/download"
+curl -L -O "$url_base/$HARFBUZZ_VERSION/$HARFBUZZ.tar.xz"
+
+
+echo ""
+echo "### Extracting archive..."
+tar -xvf "$HARFBUZZ.tar.xz" && rm -f "$HARFBUZZ.tar.xz"
+
+
+if test -n "$HARFBUZZ_PATCHES"; then
+
+  echo ""
+  echo "### Downloading patches..."
+  count=0
+  for i in $HARFBUZZ_PATCHES
+  do
+    curl -o hb-patch-$count.diff "$i"
+    count=`expr $count + 1`
+  done
+
+
+  echo ""
+  echo "### Applying patches..."
+  cd "$HARFBUZZ"
+  for i in ../hb-patch-*.diff
+  do
+    test -f "$i" || continue
+    patch -p1 -N -r - < "$i"
+    rm -f "$i"
+  done
+  cd ..
+
+fi
+
+
+echo ""
+echo "### Building..."
+
+cd "$HARFBUZZ"
 
 # Value `true' for `PKG_CONFIG' ensures that XXX_CFLAGS and XXX_LIBS
 # get actually used.
@@ -202,17 +237,68 @@ cd "$HARFBUZZ" || exit 1
   PKG_CONFIG=true \
   FREETYPE_CFLAGS="$TA_CPPFLAGS/freetype2" \
   FREETYPE_LIBS="$TA_LDFLAGS -lfreetype"
-make -j "$cores"
-make install
-make clean
-cd ..
+make -j "$CORE_COUNT"
 
+echo ""
+echo "### Installing..."
+make install
+cd ..
+rm -rf "$HARFBUZZ"
+
+echo ""
+echo "### Successfully installed HarfBuzz."
+echo ""
+
+
+
+#
+# ttfautohint
+#
 
 echo "#####"
 echo "$TTFAUTOHINT"
 echo "#####"
 
-cd "$TTFAUTOHINT" || exit 1
+
+echo ""
+echo "### Downloading archive..."
+url_base="https://download.savannah.gnu.org/releases/freetype"
+curl -L -O "$url_base/$TTFAUTOHINT.tar.gz"
+
+
+echo ""
+echo "### Extracting archive..."
+tar -xzvf "$TTFAUTOHINT.tar.gz" && rm -f "$TTFAUTOHINT.tar.gz"
+
+
+if test -n "$TTFAUTOHINT_PATCHES"; then
+
+  echo ""
+  echo "### Downloading patches..."
+  count=0
+  for i in $TTFAUTOHINT_PATCHES
+  do
+    curl -o ta-patch-$count.diff "$i"
+    count=`expr $count + 1`
+  done
+
+
+  cd "$TTFAUTOHINT"
+  for i in ../ta-patch-*.diff
+  do
+    test -f "$i" || continue
+    patch -p1 -N -r - < "$i"
+    rm -f "$i"
+  done
+  cd ..
+
+fi
+
+
+echo ""
+echo "### Building..."
+
+cd "$TTFAUTOHINT"
 
 # Value `true' for `PKG_CONFIG' ensures that XXX_CFLAGS and XXX_LIBS
 # get actually used.
@@ -230,14 +316,31 @@ cd "$TTFAUTOHINT" || exit 1
   PKG_CONFIG=true \
   HARFBUZZ_CFLAGS="$TA_CPPFLAGS/harfbuzz" \
   HARFBUZZ_LIBS="$TA_LDFLAGS -lharfbuzz"
-make -j "$cores" LDFLAGS="$TA_LDFLAGS -all-static"
+make -j "$CORE_COUNT" LDFLAGS="$TA_LDFLAGS -all-static"
+
+echo ""
+echo "### Installing..."
 make install-strip
-make clean
 cd ..
+rm -rf "$TTFAUTOHINT"
+
+echo ""
+echo "### Successfully installed ttfautohint."
+echo ""
 
 
-echo "#####"
-echo "binary: $INST/bin/ttfautohint"
-echo "#####"
+
+#
+# test for the expected path to the executable
+#
+
+if [ -f "$INST/bin/ttfautohint" ]; then
+  echo "#####"
+  echo "binary: $TTFAUTOHINT_BIN"
+  echo "#####"
+else
+  echo "ttfautohint executable was not found on the path $TTFAUTOHINT_BIN" 1>&2
+  exit 1
+fi
 
 # eof
