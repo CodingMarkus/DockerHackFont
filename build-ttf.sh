@@ -40,14 +40,10 @@ case "$1" in
 		export MAKEFLAGS="-j $cores"
 
 		# fontmake
-		pip install --upgrade fontmake &
-		pid_fontmake=$!
+		pip install --upgrade fontmake
 
 		# fontTools (installed with fontmake at this time. leave this as dependency check as python scripts for fixes require it should fontTools eliminate dep)
 		pip install --upgrade fonttools
-
-		# Wait until fontmake install has completed for sure
-		wait $pid_fontmake
 
 		# ttfautohint v1.6 (must be pinned to v1.6 and above for Hack instruction sets)
         tools/scripts/install/ttfautohint-build.sh
