@@ -14,8 +14,8 @@
 set -e
 
 : "${HACK_VERSION:="v3.003"}"
-: "${HACK_ARCHIVES_DIR:="../../../Hack-archives"}"
-: "${HACK_BUILD_DIR:="../../build"}"
+: "${HACK_ARCHIVES_DIR:="../Hack-archives"}"
+: "${HACK_BUILD_DIR:="build"}"
 
 if [ -n "$ALT_HACK_VERSION" ]
 then
