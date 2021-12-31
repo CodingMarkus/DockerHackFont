@@ -75,10 +75,3 @@ COPY alt-hack /hack/alt-hack/
 
 # Copy alt modificaton script to the image
 COPY create-alt-hack.sh /hack/
-
-
-# -=< Default Command >=-
-
-# Unless otherwise specified, we just do this
-# WORKDIR /build
-# CMD make
