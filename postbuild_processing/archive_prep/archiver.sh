@@ -11,9 +11,11 @@
 #
 # ////////////////////////////////////////////////////////////////////
 
-${HACK_VERSION:="v3.003"}
-${HACK_ARCHIVES_DIR:="../../../Hack-archives"}
-${HACK_BUILD_DIR:="../../build"}
+set -e
+
+: "${HACK_VERSION:="v3.003"}"
+: "${HACK_ARCHIVES_DIR:="../../../Hack-archives"}"
+: "${HACK_BUILD_DIR:="../../build"}"
 
 if [ -n "$ALT_HACK_VERSION" ]
 then
@@ -22,7 +24,7 @@ fi
 
 
 # Make build directory the current working directory
-cd "$HACK_BUILD_DIR" || exit 1
+cd "$HACK_BUILD_DIR"
 
 # Cleanup Hack-archives directory if present
 if [ -d "$HACK_ARCHIVES_DIR" ]; then
@@ -30,7 +32,7 @@ if [ -d "$HACK_ARCHIVES_DIR" ]; then
 fi
 
 # Make the archive directory
-mkdir "$HACK_ARCHIVES_DIR"
+mkdir -p "$HACK_ARCHIVES_DIR"
 
 # Build ttf zip archive
 zip -r "${HACK_ARCHIVES_DIR}/Hack-${HACK_VERSION}-ttf.zip" ttf -x "*.DS_Store"
