@@ -35,6 +35,8 @@ Conflicting modifications will override each other, e.g. the result of
 	$bin ../modified_hack u0030-diamond u0030-dotted
 
 will be a setup for a dotted zero, as the second mod overrides the first one.
+
+
 "
 	printf "%s" "$syntax" >&2
 	exit 1
@@ -73,6 +75,9 @@ mkdir -p "$targetdir"
 echo "Copying build files..."
 cp -p -- *.sh Makefile "$targetdir/"
 cp -pr config postbuild_processing source tools "$targetdir/"
+# Also prepare targe folders
+mkdir -p "$targetdir/build/ttf"
+mkdir -p "$targetdir/build/web/fonts"
 
 
 # If there are no modifications we are done
