@@ -1,4 +1,4 @@
-# Docker Hack
+# Docker Hack Font
 
 This is a fork of the Hack font master repository. The reason why this fork exists is to add Docker support, so you can easily build your own Hack font release (possibly with modifications) on any system with Docker (or compatible engine) installed.
 
