@@ -13,7 +13,7 @@ RUN apk update
 RUN apk add gcc g++ make patch python3 py3-pip python3-dev
 
 # Symlink python3 to python
-RUN ln -s /usr/bin/python3 /usr/bin/python
+RUN sh -c "[ -f /usr/bin/python ] || ln -s /usr/bin/python3 /usr/bin/python"
 
 # Install tools we need to download dependencies
 RUN apk add curl git
