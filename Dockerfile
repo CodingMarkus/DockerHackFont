@@ -41,7 +41,7 @@ COPY tools /hack/tools/
 # -=< Patch Alpine Linux >=-
 
 # Copy the patch file to the image
-COPY docker /hack/docker/
+COPY docker-files /hack/docker/
 
 # We need to patch stdbool.h as C++ doesn't actually know _Bool data type
 # but building ttfautohint requires the _Bool data type even in C++ files.
