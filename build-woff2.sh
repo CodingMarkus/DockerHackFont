@@ -73,10 +73,7 @@ case "$1" in
 		echo "git clone woff2 project"
 		echo "#####"
 
-		# clone the Source Foundry fork of the woff2 repo
-		#   contains fix for OS X build bug - https://github.com/google/woff2/issues/73
-		#   recursive flag to clone the brotli submodule within the woff2 repo
-		git clone --recursive https://github.com/source-foundry/woff2.git
+		git clone --recursive https://github.com/google/woff2.git
 
 		cd "$INST" || exit 1
 
