@@ -1,0 +1,135 @@
+#!/bin/sh
+
+set -e -u
+
+printUsage( )
+{
+	bin=$( basename "$0" )
+	syntax="
+SYNTAX
+
+    ./$bin <action> [<options>]
+
+ACTIONS
+
+    help       Display this help page.
+
+    setup      Setup the docker image named \"hack_font_image\".
+
+    build      Create a docker container named \"hack_font\" from
+               the image \"hack_font_image\", build the font with desired
+               modifications and copy it out of the container, and delete the
+               container afterwards.
+
+    cleanup    Remove container named \"hack_font\", if it exists and delete
+               the docker image name \"hack_font_image\".
+
+BUILD OPTIONS
+
+    ./$bin build <dest> [<suffix> [<mod> ...]]
+
+    dest      Destination folder for the archive files. If that folder does not
+              exist it will be created. 6 files are copied into that folder,
+              3 TTF archives and 3 webfont archives in the file formats:
+              .tar.gz, .zip, and .xz.
+
+    suffix    Version suffix. E.g. if suffix is \"slashed_zero\", then the
+              final archive is named \"Hack-v3.003-slashed_zero-ttf.zip\"
+              instead of just \"Hack-v3.003-ttf.zip\"
+
+    mod       Any desired modifications, like \"u0030-forwardslash\" or
+              \"u0033-flattop\" or \"u0129-slab\". List as many modifications
+              as desired. If you list conflicting modifications, e.g. if you
+              add both, \"u0030-diamond\" and \"u0030-dotted\", the last
+              modification overrides the previous ones. For a list of all
+              available modifications and previews of their look, visit
+              https://github.com/source-foundry/alt-hack/tree/master/glyphs
+"
+	printf '%s' "$syntax"
+
+	exit "$1"
+}
+
+
+removeContainer( )
+{
+	docker container remove hack_font
+}
+
+removeContainerFailSafe( )
+{
+	removeContainer 2>/dev/null || true
+}
+
+
+
+[ "$#" -lt 1 ] && { printf 'Missing action!\n' >&2 ; printUsage 1; }
+
+case "$1" in
+	help)
+		printUsage 0
+		;;
+
+	setup)
+		removeContainerFailSafe
+		docker image remove hack_font_image 2>/dev/null || true
+		docker image build --tag hack_font_image .
+		exit 0
+		;;
+
+	cleanup)
+		removeContainerFailSafe
+		docker image remove hack_font_image
+		exit 0
+		;;
+
+	build) ;;
+
+	*)
+		printf 'Unknown action "%s"!\n' "$1" >&2
+		printUsage 1
+esac
+
+
+# Building
+
+[ "$#" -lt 2 ] && { printf 'Missing dest!\n' >&2 ; printUsage 1; }
+
+dest=$2
+mkdir -p "$dest"
+
+suffix=${3:-}
+
+shift 2
+[ -n "$suffix" ] && shift
+mods="$*"
+
+printf 'Building...\n'
+printf 'Archive destination: %s\n' "$dest"
+[ -n "$suffix" ] && printf 'Version suffix: %s\n' "$suffix"
+[ -n "$mods" ] && printf 'Modifications: %s\n\n' "$mods"
+
+
+shellCMD='./create-alt-hack.sh /tmp/hack'
+[ -n "$mods" ] && shellCMD="$shellCMD $mods"
+shellCMD="$shellCMD && cd /tmp/hack && make && "
+[ -n "$suffix" ] && shellCMD="$shellCMD ALT_HACK_VERSION=$suffix"
+shellCMD="$shellCMD HACK_ARCHIVES_DIR=/tmp/hack_arch make archives"
+
+removeContainerFailSafe
+
+if ! docker run --name hack_font hack_font_image sh -c "$shellCMD"
+then
+	printf '\nBuilding font or creating font archive failed!\n' >&2
+	removeContainerFailSafe
+	exit 1
+fi
+
+if ! docker cp hack_font:/tmp/hack_arch/. "$dest"
+then
+	printf '\nCopying font archive failed!\n' >&2
+	removeContainerFailSafe
+	exit 1
+fi
+
+removeContainer
