@@ -12,6 +12,8 @@ This is a fork of the Hack font master repository. The reason why this fork exis
 ./docker cleanup
 ```
 
+You can perform as many build steps as you like to build as many variants as you like without having to perform `setup` again as long as you never perform `cleanup`, as there is no need to recreate the image because bulid operations leave no persistent modifications to the image.
+
 For more details, check out:
 
 ```
