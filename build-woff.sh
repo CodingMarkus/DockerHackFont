@@ -22,6 +22,9 @@
 #
 # ///////////////////////////////////////////////////////////////////
 
+# Fail if any command below fails
+set -e
+
 # The sfnt2woff-zopfli build directory.
 BUILD="$HOME/sfnt2woff-zopfli-build"
 

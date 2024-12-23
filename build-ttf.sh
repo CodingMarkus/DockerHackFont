@@ -17,6 +17,9 @@
 #
 # /////////////////////////////////////////////////////////////////
 
+# Fail if any command below fails
+set -e
+
 # ttfautohint local install path from Werner Lemberg's ttfautohint-build.sh install script
 #   - This is revised to ttfautohint on the user's PATH if this local install is not identified
 #     then the identified ttfautohint is used to execute hinting.  Versions of ttfautohint < 1.6 exit with status

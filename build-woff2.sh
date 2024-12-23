@@ -22,6 +22,9 @@
 #
 # ///////////////////////////////////////////////////////////////////
 
+# Fail if any command below fails
+set -e
+
 # The woff2 git clone directory.
 BUILD="$HOME"
 INST="$HOME/woff2"
