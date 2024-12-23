@@ -47,6 +47,10 @@ RUN patch /usr/include/stdbool.h /hack/docker/stdbool.h.patch
 
 # -=< Install the actual dependencies >=-
 
+# Our scripts expect PIP to modify the system Python, not a Python in a virtual
+# environment, hence we must set this environment flag.
+ENV PIP_BREAK_SYSTEM_PACKAGES 1
+
 WORKDIR /hack
 RUN ./build-ttf.sh --install-dependencies-only
 RUN ./build-woff.sh --install-dependencies-only
