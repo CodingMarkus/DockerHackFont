@@ -2,7 +2,24 @@
 
 This is a fork of the Hack font master repository. The reason why this fork exists is to add Docker support, so you can easily build your own Hack font release (possibly with modifications) on any system with Docker (or compatible engine) installed.
 
-## Sample usage:
+## Sample Usage
+
+### Using the `docker` script
+
+```
+./docker setup
+./docker build ~/Documents/Hack_with_slashed_zero slashed_zero u0030-forwardslash
+./docker cleanup
+```
+
+For more details, check out:
+
+```
+./docker help
+```
+
+
+### Performing all steps by hand
 
 1. Build a Docker image:
 
@@ -11,27 +28,33 @@ docker image build --tag hack_image .
 ```
 
 
-2. Use it to build a Hack variant with slashed zero:
+2. Use it to build a Hack variant with slashed zero in a container:
 
 ```
-docker run --name hack hack_image sh -c "
-    ./create-alt-hack.sh /tmp/hack u0030-forwardslash
-    && cd /tmp/hack
-    && make
-    && ALT_HACK_VERSION=slashed_zero
-      HACK_ARCHIVES_DIR=/tmp/hack_arch
-      make archives
-  "
+docker run --name hack hack_image sh -c '
+    ./create-alt-hack.sh /tmp/hack u0030-forwardslash  \
+    && cd /tmp/hack \
+    && make \
+    && ALT_HACK_VERSION=slashed_zero HACK_ARCHIVES_DIR=/tmp/hack_arch make archives
+  '
+```
 
+3. Copy the archives:
+
+```
 docker cp hack:/tmp/hack_arch/. ~/Documents/Hack_with_slashed_zero
+```
 
+4. Remove the container:
+
+```
 docker container rm hack
 ```
 
-3. You can build as many different variants as you like by repeating step (2) and specifying other modifications. Changes to the Docker image during step (2) are not persistent.
+5. You can build as many different variants as you like by repeating step (2) through (4).
 
 
-4. Delete the image again:
+6. Delete the image again:
 
 ```
 docker image rm hack_image
@@ -39,13 +62,17 @@ docker image rm hack_image
 
 ## Modifications in this Fork
 
-* Added a Dockerfile containing the image bulid instructions.
+* Added a `Dockerfile` containing the image build instructions.
 
-* Had to patch Alpine Linux's `stdbool.h` to make `ttfautohint` build (was easier than patching `ttfautohint` to be correct), so I added a patch file for that.
+* Added a `docker` shell script for ease of use.
+
+* Had to patch Alpine Linux's `stdbool.h` to make `ttfautohint` build (was easier than patching `ttfautohint` to be correct), so I added a patch file for that (see `docker-files` folder).
 
 * Made all natives builds detect the number of CPU cores available and use parallel building, which significantly speeds up some of the Docker image build steps.
 
 * Modified the build scripts to support a new option `--install-dependencies-only` which installs all required dependencies for building without actually building anything. This was required for the Docker image setup.
+
+* Modified all build scripts to fail if any sub-command fails (`set -e`).
 
 * Wrote a script `create-alt-hack.sh` that creates a copy of the Hack source folder and then applies desired modifications from the [alt-hack repository](https://github.com/source-foundry/alt-hack) to it. It will not only correctly replace the glyphs but also remove any manual hints from the `ttfautohint` config files for glyphs it has replaced.
 
@@ -54,6 +81,8 @@ docker image rm hack_image
 * Fixed a problem with the `archiver.sh` script that was using wrong relative paths when called from the `Makefile` (which seems intended if there is a dedicated make target for that). Also all the config variables of the script can be now be overridden by environment variables of the same name and a variant version may be given. The script is now also fail-safe and stops if any called command failed.
 
 * Fixed `ttfautohint` hinting files. The characters in the manual hinting files must be addressed by names in current `ttfautohint` builds, not by Unicode numbers as used to be the case in the past; this change has already been performed on the `dev` branch but was missing on the `master` branch, so I cherry-picked it from there.
+
+* Switched `woff2.git` in `build-woff2.sh` back from fork to Google source repo as the macOS issue has been fixe in the original source repo and the fork incorrectly appends `ar` flags causing the build to fail in Alpine Linux.
 
 
  \
