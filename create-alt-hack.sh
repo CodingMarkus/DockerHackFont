@@ -19,7 +19,7 @@ Syntax:
 	$bin /tmp/custom_hack_build
 
 
-The path is followed by a list of desired modifactions. Modifications have to
+The path is followed by a list of desired modifications. Modifications have to
 be named as in the alt-hack repository. E.g. to get a zero with forward slash
 
 	$bin /tmp/hack_slashed-zero u0030-forwardslash
