@@ -10,8 +10,7 @@ FROM alpine
 RUN apk update
 
 # Install tools we need to build dependencies later on
-RUN apk add gcc g++ make patch python3 py3-pip python3-dev
-
+RUN apk add gcc g++ make patch python3 py3-pip python3-dev util-linux-dev
 
 # Install tools we need to download dependencies
 RUN apk add curl git
