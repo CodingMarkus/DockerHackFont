@@ -86,6 +86,10 @@ docker image rm hack_image
 
 * Switched `woff2.git` in `build-woff2.sh` back from fork to Google source repo as the macOS issue has been fixe in the original source repo and the fork incorrectly appends `ar` flags causing the build to fail in Alpine Linux.
 
+## Compare it
+
+If you want to easily compare the "Hack" font with other popular coding fonts, check out my GitHub project: [Coding Font Comparison](https://github.com/CodingMarkus/CodingFontComparison)
+
 
  \
  \
